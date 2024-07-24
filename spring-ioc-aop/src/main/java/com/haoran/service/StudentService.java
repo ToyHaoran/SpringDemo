@@ -1,9 +1,7 @@
-package com.atguigu.service;
+package com.haoran.service;
 
-import com.atguigu.pojo.Student;
+import com.haoran.pojo.Student;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

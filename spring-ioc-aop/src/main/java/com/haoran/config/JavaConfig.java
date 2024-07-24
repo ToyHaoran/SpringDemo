@@ -1,4 +1,4 @@
-package com.atguigu.config;
+package com.haoran.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.atguigu")
+@ComponentScan(basePackages = "com.haoran")
 @PropertySource(value = "classpath:jdbc.properties")
 @EnableAspectJAutoProxy
 @EnableTransactionManagement //开启事务注解的支持

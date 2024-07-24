@@ -1,7 +1,7 @@
-package com.atguigu.test;
+package com.haoran.test;
 
-import com.atguigu.config.JavaConfig;
-import com.atguigu.controller.StudentController;
+import com.haoran.config.JavaConfig;
+import com.haoran.controller.StudentController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

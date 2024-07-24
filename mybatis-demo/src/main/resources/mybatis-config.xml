@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- 日志：控制台输出-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!-- 开启驼峰式自动映射 数据库的xxx_column对应java的xxxColumn -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <!--手动定义别名-->
+        <typeAlias type="com.haoran.pojo.Employee" alias="employee"/>
+        <!--自动定义包下别名，默认首字母小写，可能打印有乱码，不用管，强迫症可以导入jboss-vfs依赖-->
+        <!--<package name="com.haoran.pojo"/>-->
+    </typeAliases>
+
+    <!-- 配置Mybatis的开发环境，default指定实际运行时使用的环境。-->
+    <environments default="development">
+        <environment id="development">
+            <!-- 内置的事务管理器：MANAGED 不会自动开启事务；JDBC 自动开启事务，需要自己提交事务！-->
+            <transactionManager type="JDBC"/>
+            <!--数据源：连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/studb"/>
+                <property name="username" value="root"/>
+                <property name="password" value="toy123"/>
+            </dataSource>
+        </environment>
+
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/studb"/>
+                <property name="username" value="root"/>
+                <property name="password" value="toy123"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- Mapper注册：指定Mybatis映射文件的具体位置 -->
+    <mappers>
+        <!-- resource 指定Mapper映射文件的实际存储位置，类路径(同resources)下的相对路径 -->
+        <mapper resource="mappers/EmployeeMapper.xml"/>
+    </mappers>
+</configuration>

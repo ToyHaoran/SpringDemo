@@ -1,7 +1,7 @@
-package com.atguigu.dao.impl;
+package com.haoran.dao.impl;
 
-import com.atguigu.dao.StudentDao;
-import com.atguigu.pojo.Student;
+import com.haoran.dao.StudentDao;
+import com.haoran.pojo.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

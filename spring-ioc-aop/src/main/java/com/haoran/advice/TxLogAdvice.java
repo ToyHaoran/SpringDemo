@@ -1,4 +1,4 @@
-package com.atguigu.advice;
+package com.haoran.advice;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Aspect  // 声明切面类
 public class TxLogAdvice {
     // 环绕增强，自定义目标方法的执行!
-    @Around("com.atguigu.pointcut.MyPointCut.pc()")
+    @Around("com.haoran.pointcut.MyPointCut.pc()")
     public Object transaction(ProceedingJoinPoint joinPoint){
         //保证目标方法被执行即可
         Object[] args = joinPoint.getArgs();

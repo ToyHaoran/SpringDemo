@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper对应接口的全限定符 -->
+<mapper namespace="com.haoran.mapper.EmployeeMapper">
+    <!-- mapper接口不能重载，因为根据方法名识别  -->
+    <select id="queryById" resultType="com.haoran.pojo.Employee">
+        <!-- #{id}代表动态传入的参数，并且进行赋值，名称要一致 -->
+        select emp_id empId, emp_name empName, emp_salary empSalary
+          from t_emp where emp_id = #{id}
+        <!-- #{key}:占位符+赋值 emp_id=?  ?=赋值 可以防止注入攻击，但不能替代容器名(标签 列名 sql关键字) -->
+        <!-- ${key}:字符串拼接 "emp_id="+id，如${columnName}=#{columnValue} -->
+    </select>
+
+    <!-- 传入多个简单类型，只有两种方式
+    方式1：@Param注解指定，如queryByNameAndSalary(@Param("a") String name, @Param("b") Double salary);
+    方式2：mybatis默认机制，arg0 arg1... 或 param1 param2... -->
+    <select id="queryByNameAndSalary" resultType="employee">
+        select emp_id empId, emp_name empName, emp_salary empSalary
+        from t_emp where emp_name = #{param1} and emp_salary = #{param2}
+    </select>
+
+    <select id="queryBySalary" resultType="employee">
+        <!-- 在setting开启驼峰式自动映射，不用起别名了-->
+        select * from t_emp where emp_salary = #{salary}
+    </select>
+
+    <select id="queryEmpNameAndMaxSalary" resultType="map">
+        <!-- 返回多条记录需要用List<employee>，类型写employee-->
+        <!-- 返回一条记录用Map存储，返回多条用List<Map<,>>存储，返回类型都写map -->
+        SELECT emp_name 员工姓名, emp_salary 员工工资, (SELECT AVG(emp_salary) FROM t_emp) 部门平均工资
+        FROM t_emp WHERE emp_salary=(SELECT MAX(emp_salary) FROM t_emp)
+    </select>
+
+    <select id="queryCount" resultType="integer">
+        select count(*) from t_emp
+    </select>
+
+    <!-- 主键回显，获取自增长的主键值 -->
+    <!--                   数据库自动增强的主键值      主键列的值         接收主键列值的属性  -->
+    <insert id="insertEmp" useGeneratedKeys="true" keyColumn="emp_id" keyProperty="empId">
+        <!-- 传入实体对象，直接写对应属性名即可 -->
+        insert into t_emp (emp_name,emp_salary) value(#{empName},#{empSalary});
+    </insert>
+
+    <!-- 非自增长的主键，交给mybatis维护!-->
+    <insert id="insertEmp2">
+        <!--       在插入前执行           返回值类型      结果给哪个属性赋值-->
+        <selectKey order="BEFORE" resultType="string" keyProperty="empId">
+            SELECT REPLACE(UUID(),'-','');
+        </selectKey>
+        insert into t_emp (emp_id, emp_name,emp_salary) value(#{empId},#{empName},#{empSalary});
+    </insert>
+
+    <!-- 传入map：key = map的key即可！-->
+    <insert id="insertEmpMap">
+        insert into t_emp (emp_name, emp_salary)  values (#{name},#{salary});
+    </insert>
+
+    <delete id="deleteById">
+        delete from t_emp where emp_id = #{id}
+    </delete>
+</mapper>

@@ -1,6 +1,6 @@
-package com.atguigu.dao;
+package com.haoran.dao;
 
-import com.atguigu.pojo.Student;
+import com.haoran.pojo.Student;
 
 import java.util.List;
 

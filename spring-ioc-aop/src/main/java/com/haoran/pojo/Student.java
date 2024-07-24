@@ -1,4 +1,4 @@
-package com.atguigu.pojo;
+package com.haoran.pojo;
 
 public class Student {
 

@@ -1,7 +1,7 @@
-package com.atguigu.controller;
+package com.haoran.controller;
 
-import com.atguigu.pojo.Student;
-import com.atguigu.service.StudentService;
+import com.haoran.pojo.Student;
+import com.haoran.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
