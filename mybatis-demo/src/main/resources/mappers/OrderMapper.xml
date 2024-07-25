@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haoran.mapper.OrderMapper">
+
+    <!-- 创建resultMap实现 对一 关系映射，用于所服务的那条SQL语句 -->
+    <!--         映射        最终返回值类型-->
+    <resultMap id="orderMap" type="order">
+        <!-- Order自身属性和字段的对应关系 -->
+        <id column="order_id" property="orderId"/>
+        <result column="order_name" property="orderName"/>
+        <!--       Order中引用时使用的属性名                  类的全类名或别名 -->
+        <association property="customer" javaType="com.haoran.pojo.Customer">
+            <id column="customer_id" property="customerId"/>
+            <result column="customer_name" property="customerName"/>
+        </association>
+
+    </resultMap>
+    <!--根据ID查询订单，以及订单关联的用户的信息！-->
+    <select id="queryOrderWithCustomer" resultMap="orderMap">
+        SELECT order_id,order_name,c.customer_id,customer_name
+        FROM t_order o
+        LEFT JOIN t_customer c
+        ON o.customer_id=c.customer_id
+        WHERE o.order_id=#{orderId}
+    </select>
+</mapper>

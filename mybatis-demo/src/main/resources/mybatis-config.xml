@@ -12,9 +12,9 @@
 
     <typeAliases>
         <!--手动定义别名-->
-        <typeAlias type="com.haoran.pojo.Employee" alias="employee"/>
+        <!--<typeAlias type="com.haoran.pojo.Employee" alias="employee"/>-->
         <!--自动定义包下别名，默认首字母小写，可能打印有乱码，不用管，强迫症可以导入jboss-vfs依赖-->
-        <!--<package name="com.haoran.pojo"/>-->
+        <package name="com.haoran.pojo"/>
     </typeAliases>
 
     <!-- 配置Mybatis的开发环境，default指定实际运行时使用的环境。-->
@@ -46,5 +46,7 @@
     <mappers>
         <!-- resource 指定Mapper映射文件的实际存储位置，类路径(同resources)下的相对路径 -->
         <mapper resource="mappers/EmployeeMapper.xml"/>
+        <mapper resource="mappers/OrderMapper.xml"/>
+        <mapper resource="mappers/CustomerMapper.xml"/>
     </mappers>
 </configuration>
