@@ -8,6 +8,8 @@
         <setting name="logImpl" value="STDOUT_LOGGING"/>
         <!-- 开启驼峰式自动映射 数据库的xxx_column对应java的xxxColumn -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- resultMap标签 自动映射result标签的属性和列，只配置id即可 -->
+        <!--<setting name="autoMappingBehavior" value="FULL"/>-->
     </settings>
 
     <typeAliases>
@@ -17,6 +19,15 @@
         <package name="com.haoran.pojo"/>
     </typeAliases>
 
+    <!-- 拦截插件 可以对sql语句进行修改 -->
+    <plugins>
+        <!-- 分页插件，自动添加分页。自己写的sql不能添加limit，也不能;结尾-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 插件语法对应的数据库类型 -->
+            <property name="helperDialect" value="mysql"/>
+        </plugin>
+    </plugins>
+
     <!-- 配置Mybatis的开发环境，default指定实际运行时使用的环境。-->
     <environments default="development">
         <environment id="development">
@@ -25,6 +36,7 @@
             <!--数据源：连接池-->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <!--允许多语句执行jdbc:mysql://localhost:3306/studb?allowMultiQueries=true-->
                 <property name="url" value="jdbc:mysql://localhost:3306/studb"/>
                 <property name="username" value="root"/>
                 <property name="password" value="toy123"/>
@@ -45,8 +57,12 @@
     <!-- Mapper注册：指定Mybatis映射文件的具体位置 -->
     <mappers>
         <!-- resource 指定Mapper映射文件的实际存储位置，类路径(同resources)下的相对路径 -->
-        <mapper resource="mappers/EmployeeMapper.xml"/>
-        <mapper resource="mappers/OrderMapper.xml"/>
-        <mapper resource="mappers/CustomerMapper.xml"/>
+        <!--<mapper resource="mappers/EmployeeMapper.xml"/>-->
+        <!--<mapper resource="mappers/OrderMapper.xml"/>-->
+        <!--<mapper resource="com/haoran/mappers/CustomerMapper.xml"/>-->
+
+        <!-- 批量mapper指定：1 要求命名必须相同。
+            2 最终打包后的位置要一致，resources下直接创建多层文件夹，(用斜杠创建，xx.xx是一层文件夹)-->
+        <package name="com.haoran.mapper"/>
     </mappers>
 </configuration>

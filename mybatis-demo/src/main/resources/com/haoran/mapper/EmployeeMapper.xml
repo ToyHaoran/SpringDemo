@@ -22,8 +22,13 @@
         from t_emp where emp_name = #{param1} and emp_salary = #{param2}
     </select>
 
-    <select id="queryBySalary" resultType="employee">
-        <!-- 在setting开启驼峰式自动映射，不用起别名了-->
+    <!-- resultMap 可以映射多层结构-->
+    <resultMap id="eMap" type="employee">
+        <id column="emp_id" property="empId" /> <!--主键映射关系-->
+        <result column="emp_name" property="empName"/> <!--普通列的映射关系-->
+    </resultMap>
+    <select id="queryBySalary" resultMap="eMap">
+        <!-- 在setting开启驼峰式自动映射，不用起别名了，但只能映射一层机构-->
         select * from t_emp where emp_salary = #{salary}
     </select>
 
@@ -32,10 +37,6 @@
         <!-- 返回一条记录用Map存储，返回多条用List<Map<,>>存储，返回类型都写map -->
         SELECT emp_name 员工姓名, emp_salary 员工工资, (SELECT AVG(emp_salary) FROM t_emp) 部门平均工资
         FROM t_emp WHERE emp_salary=(SELECT MAX(emp_salary) FROM t_emp)
-    </select>
-
-    <select id="queryCount" resultType="integer">
-        select count(*) from t_emp
     </select>
 
     <!-- 主键回显，获取自增长的主键值 -->
@@ -62,4 +63,68 @@
     <delete id="deleteById">
         delete from t_emp where emp_id = #{id}
     </delete>
+
+
+    <!--提取相同SQL片段-->
+    <sql id="selectEmp">
+        select * from t_emp
+    </sql>
+
+    <!--如果传入属性,就判断相等,如果不传入,不加对应的条件-->
+    <select id="queryByDynamicSql" resultType="employee">
+        <include refid="selectEmp" />
+        <!--等价 <trim prefix="where" suffixOverrides="and|or">-->
+        <where>  <!--自动添加where关键字，自动去掉多余的and和or-->
+            <if test="name != null">
+                emp_name = #{name}
+            </if> <!--大于可写为 &gt;-->
+            <if test="salary != null and salary > 100">
+                and emp_salary = #{salary}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateEmp">
+        update t_emp
+        <set> <!--自动去掉多余逗号，自动添加set关键字-->
+            <if test="empName != null">
+                emp_name = #{empName} ,
+            </if>
+            <if test="empSalary">
+                emp_salary = #{empSalary}
+            </if>
+        </set>
+        where emp_id = #{empId}
+    </update>
+
+    <select id="queryChoose" resultType="employee">
+        <include refid="selectEmp" />
+        where
+        <choose>
+            <when test="name != null">
+                emp_name = #{name}
+            </when>
+            <when test="salary != null">
+                emp_salary = #{salary}
+            </when>
+            <otherwise>1=1</otherwise>
+        </choose>
+    </select>
+
+    <select id="queryBatch" resultType="employee">
+        <include refid="selectEmp"/>
+        where emp_id in
+        <!--     遍历ids(1,2,3)     添加的前缀    分隔符       后缀-->
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertBatch">
+        insert into t_emp (emp_name,emp_salary) values
+        <foreach collection="list" separator="," item="emp">
+            (#{emp.empName}, #{emp.empSalary})
+        </foreach>
+    </insert>
+
 </mapper>

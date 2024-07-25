@@ -15,8 +15,8 @@
             <id column="customer_id" property="customerId"/>
             <result column="customer_name" property="customerName"/>
         </association>
-
     </resultMap>
+
     <!--根据ID查询订单，以及订单关联的用户的信息！-->
     <select id="queryOrderWithCustomer" resultMap="orderMap">
         SELECT order_id,order_name,c.customer_id,customer_name

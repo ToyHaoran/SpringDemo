@@ -1,5 +1,7 @@
 package com.haoran.test;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.haoran.mapper.CustomerMapper;
 import com.haoran.mapper.EmployeeMapper;
 import com.haoran.mapper.OrderMapper;
@@ -67,6 +69,32 @@ public class MybatisTest {
             List<Order> orderList = customer.getOrderList();
             System.out.println("orderList = " + orderList);
         }
+    }
+
+    @Test  //使用分页插件
+    public void test_page(){
+        EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
+        //调用之前,先设置分页数据 (当前是第几页,每页显示多少个! )
+        PageHelper.startPage(2,2);  // 1 2
+        //注意不能将两条查询装到一个分页区
+        List<Employee> list =  mapper.queryBySalary(1000.0);
+        //将查询数据封装到一个PageInfo的分页实体类 (一共有多少页,一共有多少条等等)
+        PageInfo<Employee> pageInfo = new PageInfo<>(list);
+
+        //pageInfo获取分页的数据
+        //当前页的数据
+        List<Employee> list1 = pageInfo.getList();
+        System.out.println("list1 = " + list1);
+        //获取总页数
+        int pages = pageInfo.getPages();
+        System.out.println("pages = " + pages);
+        //总条数
+        long total = pageInfo.getTotal();
+        System.out.println("total = " + total);
+        int pageNum = pageInfo.getPageNum();
+        System.out.println("pageNum = " + pageNum);
+        int pageSize = pageInfo.getPageSize();
+        System.out.println("pageSize = " + pageSize);
     }
 
     @AfterEach
