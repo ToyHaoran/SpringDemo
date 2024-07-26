@@ -4,16 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>haoran</groupId>
+    <groupId>com.haoran</groupId>
     <artifactId>SpringDemo</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>spring-ioc-aop</module>
         <module>mybatis-demo</module>
+        <module>springmvc-demo</module>
     </modules>
 
     <properties>
+        <spring.version>6.0.6</spring.version>
+        <servlet.api>9.1.0</servlet.api>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,8 +29,9 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>6.0.6</version>
+            <version>${spring.version}</version>
         </dependency>
+
         <!--junit5测试-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -48,6 +52,7 @@
             <version>8.0.25</version>
         </dependency>
 
+        <!--数据库连接池-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
@@ -58,20 +63,21 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>6.0.6</version>
+            <version>${spring.version}</version>
         </dependency>
 
+        <!--spring 事务-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>6.0.6</version>
+            <version>${spring.version}</version>
         </dependency>
 
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>6.0.6</version>
+            <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -82,20 +88,18 @@
             <version>2.1.1</version>
         </dependency>
 
-
-
         <!-- spring-aop框架  -->
         <!--<dependency>-->
         <!--    <groupId>org.springframework</groupId>-->
         <!--    <artifactId>spring-aop</artifactId>-->
-        <!--    <version>6.0.6</version>-->
+        <!--    <version>${spring.version}</version>-->
         <!--</dependency>-->
 
         <!-- spring整合aspectj框架的依赖 , 传到aspect框架依赖-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
-            <version>6.0.6</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -108,6 +112,35 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
+        </dependency>
+
+        <!-- web相关依赖  -->
+        <!-- 在 pom.xml 中引入 Jakarta EE Web API 的依赖 -->
+        <!--
+            在 Spring Web MVC 6 中，Servlet API 迁移到了 Jakarta EE API，因此在配置 DispatcherServlet 时需要使用
+             Jakarta EE 提供的相应类库和命名空间。错误信息 “‘org.springframework.web.servlet.DispatcherServlet’
+             is not assignable to ‘javax.servlet.Servlet,jakarta.servlet.Servlet’” 表明你使用了旧版本的
+             Servlet API，没有更新到 Jakarta EE 规范。
+        -->
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-web-api</artifactId>
+            <version>${servlet.api}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- springwebmvc相关依赖  -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!--json解析依赖-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.0</version>
         </dependency>
 
     </dependencies>
